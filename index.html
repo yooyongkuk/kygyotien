@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기도유치원</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+    <style>
+        table{border-collapse: collapse;}
+        table  td{border:1px solid #444141; padding: 0 0 0 10px; line-height: 24px;}
+        #myinput{margin: 0 0 20px 0; border: 0; background-color: #ddd;line-height: 20px;
+            border-radius: 5px;}
+    </style>
+    <script>
+        $(function(){
+            $.ajax({
+                url:"./유치원현황.json",
+                dataType:"json",
+                success:function(data){
+                    if(data.length>0){
+                        var tb=$("<table/>");
+
+                        for(var i in data){
+                            var $SIGUN_NM = data[i].SIGUN_NM;
+							var $FACLT_NM = data[i].FACLT_NM;
+							var $TELNO = data[i].TELNO;
+							var $REFINE_LOTNO_ADDR = data[i].REFINE_LOTNO_ADDR;
+							var $REFINE_ZIPNO = data[i].REFINE_ZIPNO;
+
+							var row= $("<tr/>").append(
+								$("<td/>").text($SIGUN_NM),
+								$("<td/>").text($FACLT_NM),
+								$("<td/>").text($TELNO),
+								$("<td/>").text($REFINE_LOTNO_ADDR),
+								$("<td/>").text($REFINE_ZIPNO),      
+								);
+                            tb.append(row);
+                        }
+                       $(".wrap").append(tb); 
+                    }
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+    <h1>경기도 유치원 현황</h1>
+    <input id="myinput" type="text" placeholder="search:">
+
+    <div class="wrap"></div>
+
+    <script>
+        $("#myinput").on("keyup",function(){
+            var value=$(this).val();
+            $(".wrap tr").filter(function(){
+                $(this).toggle($(this).text().toLowerCase().indexOf(value)>-1)
+            });
+        });
+    </script>
+</body>
+</html>
